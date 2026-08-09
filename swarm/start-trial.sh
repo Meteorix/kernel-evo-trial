@@ -73,17 +73,6 @@ if [ -n "$bench_url" ]; then
   echo "  bench url -> $bench_url ($bench_branch)"
 fi
 
-venv="$rigbench/benchmarks/cuda/.venv"
-if [ -d "$venv" ]; then
-  ln -s "$venv" "kernelbench.com/benchmarks/cuda/.venv"
-  # Exclude it INSIDE the submodule, via its own .git/info/exclude rather than the
-  # bench's tracked .gitignore -- editing anything under kernelbench.com is
-  # bench-rule-forbidden. Without this the symlink shows as untracked content, the
-  # rig sees the submodule as modified, and gpu.sh's integrity guard aborts every run.
-  echo "benchmarks/cuda/.venv" >> "$(git -C kernelbench.com rev-parse --git-dir)/info/exclude"
-  echo "  .venv -> shared ($(du -sh "$venv" 2>/dev/null | cut -f1)), excluded locally"
-fi
-
 cat > .gitignore <<'EOF'
 # Per-candidate run logs (regenerate with swarm/harness/run.sh)
 */runs/
@@ -235,6 +224,12 @@ defect in the bench lives in a denominator — see ../plan.md §2.2 and \`KERNEL
      a register rather than a paper: append, never rewrite. -->
 EOF
 
+# The venv symlink and the submodule-local exclude that hides it both live outside
+# git, so cloning a trial does not reproduce them. One script serves both the
+# fresh-init and the fresh-clone path -- see harness/bootstrap.sh. Runs after
+# TRIAL.md exists, because that is how bootstrap.sh recognises a trial.
+CB_SHARED_VENV="$rigbench/benchmarks/cuda/.venv" ./swarm/harness/bootstrap.sh | sed 's/^/  /'
+
 git add -A
 git -c user.name="${GIT_AUTHOR_NAME:-$(git -C "$rig" config user.name)}" \
     -c user.email="${GIT_AUTHOR_EMAIL:-$(git -C "$rig" config user.email)}" \
@@ -251,3 +246,6 @@ echo "  1. fill in TRIAL.md's 'what this trial is testing'"
 echo "  2. register it in the rig:"
 echo "       git -C $rig -c protocol.file.allow=always submodule add $dest trials/$name"
 echo "  3. source $dest/env.sh, then /loop /evolve"
+echo
+echo "if you clone this trial elsewhere, run ./swarm/harness/bootstrap.sh first --"
+echo "the submodule contents, the shared venv symlink and its exclude are not in git."
