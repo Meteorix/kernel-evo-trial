@@ -6,4 +6,5 @@
 	url = /home/meteorix/evo-repos/swarm.git
 [submodule "kernelbench.com"]
 	path = kernelbench.com
-	url = /home/meteorix/proj/kernelbench.com
+	url = git@github.com:Meteorix/kernelbench.com.git
+	branch = 2070
