@@ -12,11 +12,15 @@ Read the source first — it is short:
 This file records only what those documents do not say: what running the loop on this
 machine actually cost, and the rules that came out of getting things wrong.
 
+**Paths here are relative to the repository root** — the rig, or a trial's top directory.
+Inside a trial this file is symlinked into every task directory, so from a task dir prefix
+them with `../`.
+
 Worked examples:
 
 - [workspace/fp16-gemm/docs/report.md](workspace/fp16-gemm/docs/report.md) — fp16 GEMM
   taken from a naive kernel to 88% of cuBLAS on sm_75. Private harness.
-- [workspace/cuda-bench/01-glm52-fused-moe/docs/report.md](workspace/cuda-bench/01-glm52-fused-moe/docs/report.md)
+- [trials/2026-08-08-t1/01-glm52-fused-moe/docs/report.md](trials/2026-08-08-t1/01-glm52-fused-moe/docs/report.md)
   — GLM-5.2 fused MoE against the [KernelBench deck](KERNELBENCH.md), where the
   validator, shapes and score belong to the bench rather than to the loop.
 
@@ -589,7 +593,7 @@ nvcc -O3 -std=c++17 -arch=sm_75 -lineinfo -lcublas src/main.cu -o runs/bin
   instead of yours; and `--set full` replays ~34 passes, so profile a single launch.
   Pair `--profile-from-start off` with a `torch.cuda.profiler.start()` after warmup to
   guarantee the captured launch is a warm one — see
-  [workspace/cuda-bench/profile.sh](workspace/cuda-bench/profile.sh) and its
+  [swarm/harness/profile.sh](swarm/harness/profile.sh) and its
   `prof_driver.py`. Namespace the output directory by candidate: profiling a second
   candidate into the same path silently overwrites the first's report.
 - Read metrics back without the GUI: `ncu --import x.ncu-rep --page details` and
@@ -680,7 +684,7 @@ the shape list. [workspace/fp16-gemm/run.sh](workspace/fp16-gemm/run.sh) wraps i
 `build | check | bench | profile <id>`.
 
 When the *bench* owns the harness, the pieces worth having alongside it are smaller and
-live in [workspace/cuda-bench/](workspace/cuda-bench): `run.sh` (install a candidate as
+live in [swarm/harness/](swarm/harness): `run.sh` (install a candidate as
 `solution.py`, then run the bench's own `check.py` / `benchmark.py` under the right
 toolchain), `repeat.sh` + `collect.py` (rule 5's second half — repeat the run, reduce to
 per-shape medians, keep the spread visible), a per-task `smoke.py` (seconds-long
@@ -696,7 +700,7 @@ if your kernel re-reads anything, model that separately before writing candidate
   for a narrative file. Useful, but not a KDA requirement.
 - The demo did **not** write the `profile/<run>/REPORT.md` that `ncu-report-skill`
   mandates for every profiling run. The MoE task does — see
-  [01-glm52-fused-moe/profile/](workspace/cuda-bench/01-glm52-fused-moe/profile/), one
+  [01-glm52-fused-moe/profile/](trials/2026-08-08-t1/01-glm52-fused-moe/profile/), one
   directory per (candidate, kernel, shape). It earns its keep for the runs that
   *rejected* a change: the c6-vs-c7 pair is the whole argument for rule 8's second half,
   and neither `candidates.jsonl` nor the CSV has room for it.

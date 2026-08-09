@@ -49,6 +49,7 @@ echo "  copying method and apparatus..."
 cp "$rig/KDA.md" KDA.md
 cp -r "$rig/swarm" swarm
 rm -rf swarm/.git
+cp "$here/template/SWARM.md" SWARM.md
 
 echo "  pinning the bench..."
 sub "$rigbench" kernelbench.com
@@ -117,6 +118,23 @@ for nn in "${picks[@]}"; do
   mkdir -p "$t/tools" "$t/candidates"
   cp "$here/template/collect.py" "$t/tools/"
   cp "$here/template/HYPOTHESES.md" "$t/HYPOTHESES.md"
+
+  # The three documents a worker needs, all reachable without leaving its own
+  # directory: what the task is, how to optimise a kernel, how to work in the
+  # swarm. The last two are symlinks -- one source of truth, no drift between
+  # four copies, and a worker that reads ./KDA.md still gets the real thing.
+  {
+    printf '# %s — the task\n\n' "$t"
+    printf 'Verbatim from `kernelbench.com/benchmarks/cuda/%s/%s_*/PROMPT.txt` at the\n' "$deck" "$nn"
+    printf 'pinned bench commit. The scoring rules, shapes and tolerances live beside it in\n'
+    printf '`problem.yaml`, `shapes.py`, `check.py` and `benchmark.py` — read those too, and\n'
+    printf 'trust them over anything summarised here.\n\n'
+    printf 'Then read `KDA.md` for how to attack it and `SWARM.md` for how to work alongside\n'
+    printf 'the other three workers.\n\n---\n\n'
+    cat "$src/PROMPT.txt" 2>/dev/null || printf '(no PROMPT.txt in the problem directory)\n'
+  } > "$t/prompt.md"
+  ln -s ../KDA.md "$t/KDA.md"
+  ln -s ../SWARM.md "$t/SWARM.md"
   : > "$t/candidates.jsonl"
   printf '{\n  "_comment": "Dials for this task in this trial only."\n}\n' > "$t/config.json"
   sed "s/^# TASKNAME — log$/# $t — log/" "$here/template/STATUS.md" > "$t/STATUS.md"
