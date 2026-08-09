@@ -1,0 +1,36 @@
+{
+  "session": {
+    "max_cycles": 96,
+    "max_hours": 12,
+    "_comment": "Cost backstop only, across all tasks. max_cycles replaces max_rounds now that cycles are per-task; 96 is ~24 cycles/task."
+  },
+  "schedule": {
+    "states_not_scheduled": [
+      "converged",
+      "stalled",
+      "blocked"
+    ],
+    "frontier_thin_every_n_cycles": 3,
+    "max_concurrent_ncu": 1,
+    "_ncu_note": "Was 1 per ROUND, which was premature: profiling is the highest-value information available and the GPU is idle >90% of the time. Now a concurrency cap, which the lease already enforces anyway. Three of task 01's promotions trace to a profile, and it is step 1 of soft escalation."
+  },
+  "guards": {
+    "bench_submodule_clean": true,
+    "no_foreign_gpu_processes": true,
+    "worker_touches_only_own_task_dir": true,
+    "dirty_bench_halts_everything": true,
+    "checkpoint_commit_per_milestone": true,
+    "_checkpoint_note": "Round 1 had ~40 min of work uncommitted across three worktrees at one point. 'Commit before exiting' does nothing for a worker that dies mid-cycle; commit at each milestone instead."
+  },
+  "escalation": {
+    "notify_on_needs_you": true,
+    "one_notification_per_escalation": true,
+    "soft_steps": [
+      "force_profile",
+      "recheck_arithmetic_floor",
+      "reframe_with_fresh_worker"
+    ],
+    "_comment": "The most common stall is a worker that stopped measuring and started guessing (playbook rule 6). No task should reach 'stalled' without an ncu profile of its current champion."
+  },
+  "_comment": "Deck-level only: session budget, cross-task scheduling, shared guards. Per-task dials live in <task>/config.json."
+}
