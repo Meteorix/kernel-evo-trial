@@ -5,17 +5,38 @@ deliberately does not.
 
 ```
 <NN>-<name>/
+  prompt.md          what the task is — the bench's PROMPT.txt, verbatim
+  KDA.md    ->       how to optimise a kernel        (symlink to the trial root)
+  SWARM.md  ->       how to work with three others   (symlink to the trial root)
   STATUS.md          append-only log, seeded with a bootstrap entry
-  HYPOTHESES.md      the backlog, seeded empty
+  HYPOTHESES.md      the open backlog, seeded empty
   candidates.jsonl   the ledger, seeded empty
-  config.json        per-task dials for this trial
   tools/collect.py   parses bench output into the ledger
-  candidates/
 ```
 
-Everything else a task needs — `CONTRACT.md`, the work model, a ground truth, a broken
-kernel, `smoke.py`, a profiling driver, every probe — the task writes itself. `runs/` and
-`profile/` are created by the harness that writes into them.
+Three inputs, four outputs. Everything else a task needs — `CONTRACT.md`, the work model,
+a ground truth, a broken kernel, `smoke.py`, a profiling driver, every probe — the task
+writes itself. `candidates/`, `runs/` and `profile/` are created by whoever first writes
+into them; git does not track empty directories, so seeding them achieves nothing.
+
+## Why there are two records and not one
+
+`candidates.jsonl` and `STATUS.md` both have a row per candidate, which looks like double
+entry. It is not, and the split is worth keeping: **the ledger is what a machine reads
+across tasks** — per-shape milliseconds, register counts, reps, ambient load, in fixed
+fields the leader can compare four tasks on — while **`STATUS.md` is what a person reads
+within one**, in prose, including the reasoning a number cannot carry. Neither substitutes.
+`HYPOTHESES.md` is different again: the log is chronological and append-only, so it cannot
+answer *what is still open*. That is the backlog's job, and it is mutable.
+
+## What was dropped, and why
+
+`config.json` is gone. Trial 1 filled one in per task with stall thresholds and measurement
+dials; **nothing ever read it** — no harness script, no tool — and trial 2's four tasks all
+left it at its 60-byte stub. Policy that nothing enforces is worse than policy in prose,
+because it reads as binding. Stall budgets belong in the leader's `SKILL.md`, where the
+leader actually looks. `cycles.jsonl` went the same way: 7–11 rows per task in t1, 0–2 in
+t2.
 
 ## Why the seed is this small
 

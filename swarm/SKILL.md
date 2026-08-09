@@ -15,7 +15,7 @@ back deliberately in their own commit. Start a trial with
 
 Full design: `../KDA.md`'s companion at the repo root, `PLAN.md`
 (the method, shared by all trials).
-Dials: `<trial>/evolve.config.json`. Read both if anything here is
+Dials: `<trial>/evolve.config.json` (deck-level only). Read both if anything here is
 ambiguous — this file is the procedure, the plan is the reasoning.
 
 **There is no round.** Scheduling is asynchronous and per-task: each task's next
@@ -96,7 +96,7 @@ Abort the round and say why if:
 Read all of it before deciding anything:
 
 - `<NN>-*/STATUS.md`, `<NN>-*/CONTRACT.md`, `<NN>-*/HYPOTHESES.md`,
-  `<NN>-*/cycles.jsonl`, `<NN>-*/config.json` — each task owns its own. These are
+  each task owns its own. These are
   authoritative.
 - `STATUS.md` — a roll-up only. If it disagrees with a task's
   own file, the task's file wins.
@@ -106,7 +106,7 @@ Read all of it before deciding anything:
 
 ## 2. Detect stalls
 
-Per task, from `<task>/cycles.jsonl`. **Progress means frontier movement, not a
+Per task, from its `STATUS.md` log. **Progress means frontier movement, not a
 promotion.** A round counts as progress if any of:
 
 - the champion improved, **or**
@@ -119,8 +119,8 @@ promotion.** A round counts as progress if any of:
 Task 01's `c7` (−16%) and `c9` (−15%) were both rejected and both among the most
 valuable rounds in its ledger. **Never treat a rejection as a stall.**
 
-Counters reset on progress. Compare against `<task>/config.json` → `stall`. Deck-level budget and
-scheduling live in `evolve.config.json`; per-task dials do not.
+Counters reset on progress. Thresholds live here, not in a per-task file: a `config.json`
+was tried in trial 1 and nothing ever read it, so it drifted into decoration.
 
 Classify:
 
@@ -209,7 +209,7 @@ Branch:   task/<NN>-<slug>
 Task dir: <worktree>/../trials/<trial>/<NN>-<name>/
 
 READ FIRST: ./CONTRACT.md (yours, self-contained), ./HYPOTHESES.md, ./STATUS.md,
-  ./config.json, the tail of ./candidates.jsonl, and ../../../../KDA.md.
+  the tail of ./candidates.jsonl, ./KDA.md and ./SWARM.md.
   Your task directory is self-contained — you should not need another task's files.
 
 Your hypotheses this round, highest value first: <from HYPOTHESES.md>
@@ -251,8 +251,8 @@ MEASURE HONESTLY.
 
 BOUNDARIES.
 - YOUR TASK DIRECTORY IS SELF-CONTAINED and has a fixed shape: six state files
-  (CONTRACT.md, STATUS.md, HYPOTHESES.md, candidates.jsonl, cycles.jsonl,
-  config.json) and five directories (tools/, candidates/, docs/, runs/, profile/).
+  (CONTRACT.md, STATUS.md, HYPOTHESES.md, candidates.jsonl,
+  and the three input docs) plus tools/, candidates/, runs/, profile/.
   All of it is YOURS — edit freely. You should never need another task's directory.
 - PUT EVERY SCRIPT YOU WRITE IN tools/. Probes and one-off models accumulate fast;
   one task hit 30 top-level entries, 20 of them ad-hoc probes. Keep them — they are
@@ -260,7 +260,7 @@ BOUNDARIES.
   files the next worker reads first. A tool that locates itself sits one level down:
   Path(__file__).resolve().parent.parent is the task dir.
 - Leader-owned, ask do not edit: ../gpu.sh, ../run.sh, ../ab.sh, ../repeat.sh,
-  ../profile.sh, ../template/, ../STATUS.md (a roll-up only), ../evolve.config.json
+  ../swarm/, ../KDA.md, ../SWARM.md
   and ../../../../KDA.md. These are shared BECAUSE sharing is the point: six
   harness bugs found by one task were fixed for all four in a day. Report bugs in
   them; do not fork them.
@@ -361,7 +361,7 @@ A playbook rule that touches a `stalled` task's frontier returns it to
 
 ## 8. Close the cycle
 
-Append one row to `<task>/cycles.jsonl`: spawn and report times,
+Append a `STATUS.md` entry for the cycle: spawn and report times,
 outcome, hypotheses opened/closed, score, GPU seconds, `progress` true/false.
 Rewrite that task's own `<task>/STATUS.md`, then refresh the deck roll-up line. Then **immediately respawn that task**
 (§3) — do not batch it with the others.

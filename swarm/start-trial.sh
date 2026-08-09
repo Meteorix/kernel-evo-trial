@@ -115,7 +115,12 @@ for nn in "${picks[@]}"; do
   # silently profiled the wrong shape for a whole cycle (playbook rule 28).
   # A stub that is always rewritten except when it poisons a task is worse than
   # no stub. runs/ and profile/ are created by the harness that writes them.
-  mkdir -p "$t/tools" "$t/candidates"
+  # No candidates/ dir: git does not track empty directories, so it would not
+  # survive a clone anyway. Whoever writes the first candidate creates it.
+  # No config.json either -- t1 filled one in with stall and measurement dials,
+  # nothing ever read it, and t2's four tasks left it at its 60-byte stub. Policy
+  # that nothing enforces is worse than policy in prose, because it looks binding.
+  mkdir -p "$t/tools"
   cp "$here/template/collect.py" "$t/tools/"
   cp "$here/template/HYPOTHESES.md" "$t/HYPOTHESES.md"
 
@@ -136,7 +141,6 @@ for nn in "${picks[@]}"; do
   ln -s ../KDA.md "$t/KDA.md"
   ln -s ../SWARM.md "$t/SWARM.md"
   : > "$t/candidates.jsonl"
-  printf '{\n  "_comment": "Dials for this task in this trial only."\n}\n' > "$t/config.json"
   sed "s/^# TASKNAME — log$/# $t — log/" "$here/template/STATUS.md" > "$t/STATUS.md"
   cat >> "$t/STATUS.md" <<EOF
 
