@@ -178,11 +178,18 @@ done
 rig_sha=$(git -C "$rig" rev-parse --short HEAD)
 bench_sha=$(git -C kernelbench.com rev-parse --short HEAD)
 
-cat > env.sh <<EOF
+cat > env.sh <<'EOF'
 # source this before using swarm/harness — it points the harness at THIS trial's
-# pinned bench rather than the rig's checkout.
-export CB_BENCH_CUDA="$dest/kernelbench.com/benchmarks/cuda"
-export CB_WT_ROOT="\${CB_WT_ROOT:-$dest-wt}"
+# pinned bench rather than any other checkout.
+#
+# Paths are derived from this file's own location, never hardcoded: a trial gets
+# cloned, and an absolute path baked in at creation would silently point the
+# harness at the machine it was created on.
+_self=${BASH_SOURCE[0]:-$0}
+_here=$(cd "$(dirname "$_self")" && pwd)
+export CB_BENCH_CUDA="$_here/kernelbench.com/benchmarks/cuda"
+export CB_WT_ROOT="${CB_WT_ROOT:-$_here-wt}"
+unset _self _here
 EOF
 
 cat > TRIAL.md <<EOF
