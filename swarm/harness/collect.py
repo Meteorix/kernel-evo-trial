@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Turn runs/<id>*_bench.log into rows of benchmark.csv. Deck-generic.
 
 benchmark.py prints the numbers but keeps no file, and re-running it to recover
