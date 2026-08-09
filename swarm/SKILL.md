@@ -13,7 +13,7 @@ the bench's transcribed contracts. A trial never writes to it; fixes are promote
 back deliberately in their own commit. Start a trial with
 `start-trial.sh <name>`.
 
-Full design: `../kda/PLAYBOOK.md`'s companion at the repo root, `PLAN.md`
+Full design: `../KDA.md`'s companion at the repo root, `PLAN.md`
 (the method, shared by all trials).
 Dials: `<trial>/evolve.config.json`. Read both if anything here is
 ambiguous — this file is the procedure, the plan is the reasoning.
@@ -209,7 +209,7 @@ Branch:   task/<NN>-<slug>
 Task dir: <worktree>/../trials/<trial>/<NN>-<name>/
 
 READ FIRST: ./CONTRACT.md (yours, self-contained), ./HYPOTHESES.md, ./STATUS.md,
-  ./config.json, the tail of ./candidates.jsonl, and ../../../../kda/PLAYBOOK.md.
+  ./config.json, the tail of ./candidates.jsonl, and ../../../../KDA.md.
   Your task directory is self-contained — you should not need another task's files.
 
 Your hypotheses this round, highest value first: <from HYPOTHESES.md>
@@ -261,7 +261,7 @@ BOUNDARIES.
   Path(__file__).resolve().parent.parent is the task dir.
 - Leader-owned, ask do not edit: ../gpu.sh, ../run.sh, ../ab.sh, ../repeat.sh,
   ../profile.sh, ../template/, ../STATUS.md (a roll-up only), ../evolve.config.json
-  and ../../../../kda/PLAYBOOK.md. These are shared BECAUSE sharing is the point: six
+  and ../../../../KDA.md. These are shared BECAUSE sharing is the point: six
   harness bugs found by one task were fixed for all four in a day. Report bugs in
   them; do not fork them.
 - NEVER edit anything under kernelbench.com. check.py, benchmark.py, shapes.py,
@@ -351,7 +351,7 @@ When a task goes `stalled` or `blocked`, write into **Needs you** at the top of
 ## 7. Accumulate
 
 Ask: did anything learned generalise beyond its task? If so add it to
-`../kda/PLAYBOOK.md` as a numbered rule, citing the candidate that bought it —
+`../KDA.md` as a numbered rule, citing the candidate that bought it —
 rules 5, 8 and 9 all came from task 01 and now protect 02–04. Then propagate
 across tasks explicitly: per-round workers have no memory of each other, so a
 technique that worked on 01 reaches 02 only if you carry it in the brief.

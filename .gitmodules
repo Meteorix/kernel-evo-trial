@@ -2,3 +2,6 @@
 	path = kernelbench.com
 	url = git@github.com:Meteorix/kernelbench.com.git
 	branch = 2070
+[submodule "kernel-design-agents"]
+	path = kernel-design-agents
+	url = https://github.com/mit-han-lab/kernel-design-agents.git

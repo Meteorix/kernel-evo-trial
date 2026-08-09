@@ -2,10 +2,10 @@
 
 **The method, not a trial.** This describes how a trial runs; what any particular
 trial *found* lives in that trial's directory. It sits at the repo root beside
-`../kda/PLAYBOOK.md` because both are accumulated method — a copy inside each trial
+`../KDA.md` because both are accumulated method — a copy inside each trial
 would either duplicate or diverge.
 
-The pair divides cleanly: **`../kda/PLAYBOOK.md` is how to optimise a kernel**
+The pair divides cleanly: **`../KDA.md` is how to optimise a kernel**
 (27 rules, each bought by a specific candidate); **this file is how to run many
 agents doing that at once** (topology, the GPU lease, scheduling, the merge gate).
 
@@ -40,7 +40,7 @@ them.
    tasks *from disk alone*. No progress may exist only in an agent's context. This
    is the single hardest constraint and it drives §4, §5 and §8.
 2. **Accumulating.** A loop that only produces kernels plateaus. The thing that has
-   actually compounded in this repo is `../kda/PLAYBOOK.md` — rules 5, 8 and 9 were all
+   actually compounded in this repo is `../KDA.md` — rules 5, 8 and 9 were all
    *bought* with rejected candidates on task 01, and each one now prevents a class
    of wasted work on tasks 02–04. Promoting lessons into the playbook is a
    first-class output, not a nicety (§7).
@@ -62,7 +62,7 @@ compute device.
   task 01 is 3–7 reps of a 6-shape sweep; tasks 03 (ctx 32768) and 04 (65536 envs)
   will be longer. The win comes from *maximising CPU-side work per GPU-second*, not
   from four-way parallel benching.
-- **Parallelism corrupts the measurement.** `../kda/PLAYBOOK.md` rule 5 is the
+- **Parallelism corrupts the measurement.** `../KDA.md` rule 5 is the
   hardest-won lesson in this repo: the card drives the display, idles at 315 MHz,
   clocks cannot be locked under WSL2, and task 01's T=512 is *bimodal* across a
   1.64x clock-bin gap. Three agents running `nvcc` on the other 11 cores while a
@@ -168,7 +168,7 @@ authoritative.
 | `<task>/docs/report.md` | worker | The narrative for a human reader |
 | `<task>/cycles.jsonl` | task | Append-only per-**cycle** record, keyed by (task, cycle): spawn/report times, outcome, hypotheses opened/closed, geomean, GPU seconds, progress. The data the stall detector runs on. §4.3, §8.4. (`rounds.jsonl` is its synchronous predecessor, kept as history) |
 | `evolve.config.json` | you | Stall thresholds and scheduling dials, tunable without touching the skill. §4.3 |
-| `../kda/PLAYBOOK.md` | leader | Accumulated cross-task lessons. §7 |
+| `../KDA.md` | leader | Accumulated cross-task lessons. §7 |
 | `<task>/CONTRACT.md` | task | That task's contract **and its hand-counted work model** (§4.4). Self-contained: the machine/bench preamble is duplicated into each so a worker never reads a sibling |
 | git history | leader | The archive. `STATUS.md` keeps only the recent window |
 
@@ -199,7 +199,7 @@ Three things stay shared, and the reason is not tidiness:
   status, and an env-scrubbing self-deadlock. Per-task copies would have fragmented
   every one. Tasks add local tools freely and already do — `sched.py`, `floors.py`,
   `determinism.py`, `step_profile.sh` each live in the task that wrote them.
-- **`../kda/PLAYBOOK.md`.** Cross-task transfer is the compounding asset. Two tasks
+- **`../KDA.md`.** Cross-task transfer is the compounding asset. Two tasks
   independently reached the same conflict-cost rule from opposite directions on the
   same afternoon.
 
@@ -523,7 +523,7 @@ process start, compile and teardown, not just kernel execution.
 ## 7. Accumulation — the part that compounds
 
 At the end of each round the leader asks: *did anything learned generalise beyond
-its task?* If yes it goes into `../kda/PLAYBOOK.md` as a numbered rule, with the
+its task?* If yes it goes into `../KDA.md` as a numbered rule, with the
 candidate that bought it cited. Rules 5, 8 and 9 all came from task 01 this way and
 now protect 02–04.
 
@@ -571,7 +571,7 @@ On a timer, and always before spawning:
   invisible to a detector that only looks at cycle boundaries, and the leader
   twice misread liveness from file mtimes, which say nothing once a worker stops
   writing and starts running.
-- Accumulate (§7): promote lessons to `../kda/PLAYBOOK.md`, propagate across tasks.
+- Accumulate (§7): promote lessons to `../KDA.md`, propagate across tasks.
   This is the one genuinely cross-task step, and it is why the sweep exists at all
   rather than folding into §8.1.
 - Rewrite the `STATUS.md` narrative sections and commit.
@@ -654,7 +654,7 @@ that it reaches you. One notification per new escalation, not per round.
 
 **Ownership.** A worker commits *only* under its own `<NN>-*/`.
 Everything else — `run.sh`, `gpu.sh`, `ab.sh`, `profile.sh`, `repeat.sh`,
-`../kda/PLAYBOOK.md`, `README.md`, the deck `STATUS.md` roll-up, the shared harness
+`../KDA.md`, `README.md`, the deck `STATUS.md` roll-up, the shared harness
 template — is **leader-only**. A worker that wants a shared file changed asks; it
 does not edit. This makes the conflict surface between branches ~zero by
 construction.

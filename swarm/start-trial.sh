@@ -46,15 +46,23 @@ fi
 mkdir -p "$dest" && cd "$dest" && git init -q
 
 echo "  copying method and apparatus..."
-cp -r "$rig/kda" kda
+cp "$rig/KDA.md" KDA.md
 cp -r "$rig/swarm" swarm
-rm -rf kda/.git swarm/.git
+rm -rf swarm/.git
 
 echo "  pinning the bench..."
 sub "$rigbench" kernelbench.com
 # Clone from the local checkout (fast, no network) but RECORD its real remote, so
 # the trial resolves from anywhere it is pushed. A local path here is what made
 # the first pushed trial unclonable.
+kda_agents=${CB_KDA_AGENTS:-$rig/kernel-design-agents}
+if [ -d "$kda_agents" ]; then
+  agents_url=$(git -C "$kda_agents" config --get remote.origin.url || echo "$kda_agents")
+  sub "$kda_agents" kernel-design-agents
+  git config -f .gitmodules submodule.kernel-design-agents.url "$agents_url"
+  echo "  kernel-design-agents -> $agents_url"
+fi
+
 bench_url=$(git -C "$rigbench" config --get remote.origin.url || true)
 bench_branch=$(git -C "$rigbench" rev-parse --abbrev-ref HEAD || echo master)
 if [ -n "$bench_url" ]; then
@@ -148,11 +156,12 @@ possible.
 | | |
 | --- | --- |
 | tasks | ${picks[*]} |
-| \`kda/\`, \`swarm/\` | copied from the rig at \`$rig_sha\` — method and apparatus |
+| \`KDA.md\`, \`swarm/\` | copied from the rig at \`$rig_sha\` — method and apparatus |
+| \`kernel-design-agents\` | submodule — upstream reference material |
 | \`kernelbench.com\` | submodule \`$bench_sha\` — **the comparison instrument** |
 | contracts | none shipped; the trial writes its own (rule 1, then rule 2) |
 
-\`kda/\` and \`swarm/\` are **copies**, so this trial can patch its own harness without
+\`KDA.md\` and \`swarm/\` are **copies**, so this trial can patch its own harness without
 touching any other trial — and a controlled comparison is still available: check the rig
 out at an older SHA and start a trial from there, and the knowledge variable is held
 fixed. Record here if you deliberately started from an older rig.

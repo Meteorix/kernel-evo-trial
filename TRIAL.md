@@ -9,11 +9,11 @@ possible.
 | | |
 | --- | --- |
 | tasks | 01 02 03 04 |
-| `kda/`, `swarm/` | **copied** from the rig at `511b741` — method and apparatus |
+| `KDA.md`, `swarm/` | **copied** from the rig at `511b741` — method and apparatus |
 | `kernelbench.com` | `824a699` — **the comparison instrument** |
 | contracts | none shipped; the trial writes its own (rule 1, then rule 2) |
 
-`kda/` and `swarm/` are **copies**, not submodules: the trial is portable, and it can
+`KDA.md` and `swarm/` are **copies**, not submodules: the trial is portable, and it can
 patch its own harness without changing the starting line for any other trial. A controlled
 comparison is still available — check the rig out at an older SHA and start a trial from
 there, and the knowledge variable is held fixed. Record here if you deliberately started

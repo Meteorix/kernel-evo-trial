@@ -55,7 +55,7 @@ preserved in `../evo-trials/2026-08-08-t1/<task>/CONTRACT.md` for comparison.
 | `harness/` | yes, as a frozen copy | six harness bugs were found and fixed during trial 1 — a promotion bias in the A/B, a hardcoded regex in the profiler, two clobbering bugs, an exit-code bug, an env-scrubbing deadlock. Re-finding those would measure nothing useful. Fixes made *during* a trial live in that trial until deliberately promoted back here. |
 | `template/` | yes | shared ledger schema is what lets the leader compare tasks at all |
 | `tasks/*/CONTRACT.md` | yes, transcription only | see above |
-| `../kda/PLAYBOOK.md` (repo root) | **yes, and this is a choice** | accumulation is the point of the system. But it means trial 2 starts with 27 rules where trial 1 started with 10, so the two are *not* a controlled comparison of the loop alone. State in `TRIAL.md` which playbook revision a trial began from. |
+| `../KDA.md` (repo root) | **yes, and this is a choice** | accumulation is the point of the system. But it means trial 2 starts with 27 rules where trial 1 started with 10, so the two are *not* a controlled comparison of the loop alone. State in `TRIAL.md` which playbook revision a trial began from. |
 | tools, work models, hypotheses, candidates, ledgers, profiles | **no** | these are what a trial is *for* |
 
 The playbook row is the one to think about before running a comparison. If you want
