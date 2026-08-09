@@ -23,8 +23,13 @@ here with no edit.
 Optional `shape_labels.json` in the task dir maps shape index -> label
 (e.g. {"0": "T2048"}), purely for readability.
 
-    python3 collect.py runs/*_bench.log > benchmark.csv
-    python3 collect.py runs/ab_c8_vs_c10/*_bench.log
+    ../swarm/harness/collect.py runs/*_bench.log > benchmark.csv
+    ../swarm/harness/collect.py runs/ab_c8_vs_c10/*_bench.log
+
+Lives in the harness, not in a task's tools/, because it is genuinely shared:
+four tasks in trial 2 each received a copy and all four left it byte-identical.
+A tool nobody needs to change does not belong in the directory reserved for the
+tools a task writes itself.
 """
 import csv
 import json

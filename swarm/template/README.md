@@ -11,10 +11,9 @@ deliberately does not.
   STATUS.md          append-only log, seeded with a bootstrap entry
   HYPOTHESES.md      the open backlog, seeded empty
   candidates.jsonl   the ledger, seeded empty
-  tools/collect.py   parses bench output into the ledger
 ```
 
-Three inputs, four outputs. Everything else a task needs — `CONTRACT.md`, the work model,
+Six files, no directories: three inputs, three outputs. Everything else a task needs — `CONTRACT.md`, the work model,
 a ground truth, a broken kernel, `smoke.py`, a profiling driver, every probe — the task
 writes itself. `candidates/`, `runs/` and `profile/` are created by whoever first writes
 into them; git does not track empty directories, so seeding them achieves nothing.
@@ -31,6 +30,10 @@ answer *what is still open*. That is the backlog's job, and it is mutable.
 
 ## What was dropped, and why
 
+`collect.py` moved to `swarm/harness/`. Four tasks each got a copy and all four left it
+byte-identical, which is the definition of a shared tool: it does not belong in the
+directory reserved for what a task writes itself.
+
 `config.json` is gone. Trial 1 filled one in per task with stall thresholds and measurement
 dials; **nothing ever read it** — no harness script, no tool — and trial 2's four tasks all
 left it at its 60-byte stub. Policy that nothing enforces is worse than policy in prose,
@@ -44,7 +47,7 @@ Measured across trial t2's four tasks, which all started from a much larger seed
 
 | seeded | what happened |
 | --- | --- |
-| `collect.py` | **kept unchanged by 4/4** |
+| `collect.py` | **kept unchanged by 4/4** — so it moved to `harness/`, where shared things live |
 | `HYPOTHESES.md` | grew 36 → 223–314 lines in 4/4 |
 | `smoke.py` | **rewritten by 4/4** |
 | `docs/draft.md`, `docs/report.md` | **untouched in 8/8** |

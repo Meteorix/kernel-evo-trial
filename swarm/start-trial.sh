@@ -115,13 +115,14 @@ for nn in "${picks[@]}"; do
   # silently profiled the wrong shape for a whole cycle (playbook rule 28).
   # A stub that is always rewritten except when it poisons a task is worse than
   # no stub. runs/ and profile/ are created by the harness that writes them.
-  # No candidates/ dir: git does not track empty directories, so it would not
-  # survive a clone anyway. Whoever writes the first candidate creates it.
-  # No config.json either -- t1 filled one in with stall and measurement dials,
-  # nothing ever read it, and t2's four tasks left it at its 60-byte stub. Policy
-  # that nothing enforces is worse than policy in prose, because it looks binding.
-  mkdir -p "$t/tools"
-  cp "$here/template/collect.py" "$t/tools/"
+  # A task starts with SIX files and no directories. Everything dropped was
+  # measured on trial 2: config.json was read by no code and left at its stub by
+  # 4/4; collect.py was kept byte-identical by 4/4, so it belongs in the harness
+  # rather than copied per task; smoke.py and prof_driver.py were rewritten by
+  # 4/4 and 3/4, and the one task that kept prof_driver.py profiled the wrong
+  # shape for a whole cycle. tools/, candidates/, runs/ and profile/ are created
+  # by whoever first writes into them -- git does not track empty directories.
+  mkdir -p "$t"
   cp "$here/template/HYPOTHESES.md" "$t/HYPOTHESES.md"
 
   # The three documents a worker needs, all reachable without leaving its own

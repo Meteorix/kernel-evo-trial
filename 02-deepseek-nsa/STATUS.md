@@ -56,8 +56,9 @@ the way it does.
 
 Seeded by `start-trial.sh`. Nothing here is measured yet.
 
-**What you were given** — `tools/collect.py` (parses bench output; generic, four tasks
-kept it unchanged) and an empty `HYPOTHESES.md`. That is all, deliberately.
+**What you were given** — this log, an empty `HYPOTHESES.md`, an empty
+`candidates.jsonl`, and the three documents beside them: `prompt.md`, `KDA.md`,
+`SWARM.md`. Six files, no directories. That is all, deliberately.
 
 **What you must write** — everything else, in playbook rule 10's order:
 

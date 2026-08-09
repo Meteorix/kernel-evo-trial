@@ -124,7 +124,7 @@ done
 
 # --- report -----------------------------------------------------------------
 echo
-"$VENV/bin/python" "$task/tools/collect.py" "$out"/*_bench.log | tee "$out/compare.csv"
+"$VENV/bin/python" "$here/collect.py" "$out"/*_bench.log | tee "$out/compare.csv"
 echo
 echo "-> $out/  (compare.csv, ambient.txt, ${reps} paired reps)"
 # Say which candidate is left installed. profile.sh keys its output directory off

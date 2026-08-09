@@ -39,6 +39,22 @@ thinking and writing, not silicon. So:
   `ncu --import`. The work model, the hypotheses and the ledger are all free.
 - **Do not hold the lease while you think.** Take it, measure, release.
 
+## What the harness gives you
+
+`../swarm/harness/` holds everything shared: `run.sh`, `ab.sh`, `repeat.sh`, `profile.sh`,
+`gpu.sh`, and `collect.py`, which turns saved bench logs into a per-shape CSV with the
+median over reps and the spread kept visible.
+
+```bash
+../swarm/harness/collect.py runs/*_bench.log > benchmark.csv
+```
+
+**Your `tools/` is for tools you write** — probes, ground truths, work models, a profiling
+driver. Put every script there rather than at the top level, or the next worker cannot find
+it and rebuilds it. Nothing is seeded there, deliberately: the shared stub that used to be
+handed out selected the wrong shape on three of four problems, and the one task that
+trusted it lost a cycle of profiles.
+
 ## The rules that decide whether your number is believed
 
 - **Write the hypothesis before the measurement.** A prediction recorded afterwards is a
