@@ -1,0 +1,9 @@
+[submodule "kda"]
+	path = kda
+	url = /home/meteorix/evo-repos/kda.git
+[submodule "swarm"]
+	path = swarm
+	url = /home/meteorix/evo-repos/swarm.git
+[submodule "kernelbench.com"]
+	path = kernelbench.com
+	url = /home/meteorix/proj/kernelbench.com
