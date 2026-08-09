@@ -107,7 +107,8 @@ cycle that ran out of time and *said so* is worth more than one that quietly sto
 
 ## Reporting, merging, and being interrupted
 
-End your cycle by updating `STATUS.md` and `candidates.jsonl`, committing
+End your cycle by updating `STATUS.md` and `candidates.jsonl` (KDA's ledger — you create it
+with your first candidate), committing
 to your branch, and reporting: what you tested, what you promoted or rejected and on what
 evidence, and what the next cycle should do first. **State plainly what you could not
 finish.**

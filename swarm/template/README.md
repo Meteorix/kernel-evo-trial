@@ -9,18 +9,31 @@ deliberately does not.
   KDA.md    ->       how to optimise a kernel        (symlink to the trial root)
   SWARM.md  ->       how to work with three others   (symlink to the trial root)
   STATUS.md          append-only log, seeded with a bootstrap entry
-  candidates.jsonl   the ledger, seeded empty
 ```
 
-Five files, no directories: three inputs, two outputs. Everything else a task needs — `CONTRACT.md`, the work model,
+Four files, no directories: three documents and the log they tell you to keep. Everything else a task needs — `CONTRACT.md`, the work model,
 a ground truth, a broken kernel, `smoke.py`, a profiling driver, every probe — the task
 writes itself. `candidates/`, `runs/` and `profile/` are created by whoever first writes
 into them; git does not track empty directories, so seeding them achieves nothing.
 
+## Every file traces to one of the three documents
+
+That is the test for whether something belongs in the seed at all:
+
+| introduced by | which brings |
+| --- | --- |
+| `prompt.md` | nothing — it is the task statement |
+| `KDA.md` | `CONTRACT.md`, `candidates.jsonl`, `candidates/`, `tools/`, `profile/` |
+| `SWARM.md` | `STATUS.md`, and the branch and commit discipline around it |
+
+So only `STATUS.md` is seeded, because only it belongs to the layer that does the seeding.
+`candidates.jsonl` is KDA's own evidence file — KDA.md introduces it, the task creates it
+with its first candidate, and seeding an empty one would assert its existence twice.
+
 ## Why there are two records and not one
 
-`candidates.jsonl` and `STATUS.md` both have a row per candidate, which looks like double
-entry. It is not, and the split is worth keeping: **the ledger is what a machine reads
+`candidates.jsonl` and `STATUS.md` both end up with a row per candidate, which looks like
+double entry. It is not, and the split is worth keeping: **the ledger is what a machine reads
 across tasks** — per-shape milliseconds, register counts, reps, ambient load, in fixed
 fields the leader can compare four tasks on — while **`STATUS.md` is what a person reads
 within one**, in prose, including the reasoning a number cannot carry. Neither substitutes.

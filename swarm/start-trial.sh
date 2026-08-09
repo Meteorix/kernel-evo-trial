@@ -115,7 +115,7 @@ for nn in "${picks[@]}"; do
   # silently profiled the wrong shape for a whole cycle (playbook rule 28).
   # A stub that is always rewritten except when it poisons a task is worse than
   # no stub. runs/ and profile/ are created by the harness that writes them.
-  # A task starts with FIVE files and no directories. Everything dropped was
+  # A task starts with FOUR files and no directories. Everything dropped was
   # measured on trial 2: config.json was read by no code and left at its stub by
   # 4/4; collect.py was kept byte-identical by 4/4, so it belongs in the harness
   # rather than copied per task; smoke.py and prof_driver.py were rewritten by
@@ -124,7 +124,9 @@ for nn in "${picks[@]}"; do
   # by whoever first writes into them -- git does not track empty directories.
   # HYPOTHESES.md is gone too: hypotheses are entries in the log, and the open set
   # is DERIVED by `status.sh --open` rather than asserted in a hand-kept list that
-  # nothing forces to stay true.
+  # nothing forces to stay true. candidates.jsonl is not seeded either -- it is
+  # KDA's own evidence file, so KDA.md is what introduces it, and the task creates
+  # it with its first candidate. Seeding an empty one just asserts it twice.
   mkdir -p "$t"
 
   # The three documents a worker needs, all reachable without leaving its own
@@ -143,7 +145,6 @@ for nn in "${picks[@]}"; do
   } > "$t/prompt.md"
   ln -s ../KDA.md "$t/KDA.md"
   ln -s ../SWARM.md "$t/SWARM.md"
-  : > "$t/candidates.jsonl"
   sed "s/^# TASKNAME — log$/# $t — log/" "$here/template/STATUS.md" > "$t/STATUS.md"
   cat >> "$t/STATUS.md" <<EOF
 
@@ -151,9 +152,13 @@ for nn in "${picks[@]}"; do
 
 Seeded by \`start-trial.sh\`. Nothing here is measured yet.
 
-**What you were given** — this log, an empty \`candidates.jsonl\`, and the three documents
-beside them: \`prompt.md\`, \`KDA.md\`, \`SWARM.md\`. Five files, no directories. That is all,
-deliberately.
+**What you were given** — this log and the three documents beside it: \`prompt.md\` (what
+the task is), \`KDA.md\` (how to optimise a kernel), \`SWARM.md\` (how to work alongside
+three other workers). Four files, no directories. That is all, deliberately.
+
+Everything else is named by one of those three, and you create it: \`CONTRACT.md\`,
+\`candidates.jsonl\`, \`candidates/\`, \`tools/\` and \`profile/\` come from KDA;
+this log comes from SWARM.
 
 **What you must write** — everything else, in playbook rule 10's order:
 

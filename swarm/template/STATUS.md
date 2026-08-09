@@ -45,7 +45,7 @@ work being described rather than at the note describing it.
 `prompt.md` — the task. `KDA.md`, `SWARM.md` — how to attack it, how to collaborate.
 `CONTRACT.md` — the transcribed task plus the hand-counted work model (rule 2), which
 you write.
-`candidates.jsonl` — the machine-readable ledger, one row per candidate.
+`candidates.jsonl` — KDA's machine-readable ledger, one row per candidate. You create it.
 This file — the human-readable history, in order, that explains why the ledger looks
 the way it does.
 

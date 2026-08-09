@@ -43,7 +43,7 @@ work being described rather than at the note describing it.
 ## Where the other files stand
 
 `CONTRACT.md` — the transcribed task plus the hand-counted work model (rule 2).
-`candidates.jsonl` — the machine-readable ledger, one row per candidate.
+`candidates.jsonl` — KDA's machine-readable ledger, one row per candidate. You create it.
 This file — the human-readable history, in order, that explains why the ledger looks
 the way it does.
 
@@ -55,9 +55,13 @@ the way it does.
 
 Seeded by `start-trial.sh`. Nothing here is measured yet.
 
-**What you were given** — this log, an empty `candidates.jsonl`, and the three documents
-beside them: `prompt.md`, `KDA.md`, `SWARM.md`. Five files, no directories. That is all,
-deliberately.
+**What you were given** — this log and the three documents beside it: `prompt.md` (what
+the task is), `KDA.md` (how to optimise a kernel), `SWARM.md` (how to work alongside
+three other workers). Four files, no directories. That is all, deliberately.
+
+Everything else is named by one of those three, and you create it: `CONTRACT.md`,
+`candidates.jsonl`, `candidates/`, `tools/` and `profile/` come from KDA; this log comes
+from SWARM.
 
 **What you must write** — everything else, in playbook rule 10's order:
 
