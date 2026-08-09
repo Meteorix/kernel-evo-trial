@@ -43,7 +43,6 @@ work being described rather than at the note describing it.
 ## Where the other files stand
 
 `CONTRACT.md` — the transcribed task plus the hand-counted work model (rule 2).
-`HYPOTHESES.md` — the open backlog, which is *mutable*: hypotheses open and close.
 `candidates.jsonl` — the machine-readable ledger, one row per candidate.
 This file — the human-readable history, in order, that explains why the ledger looks
 the way it does.
@@ -56,9 +55,9 @@ the way it does.
 
 Seeded by `start-trial.sh`. Nothing here is measured yet.
 
-**What you were given** — this log, an empty `HYPOTHESES.md`, an empty
-`candidates.jsonl`, and the three documents beside them: `prompt.md`, `KDA.md`,
-`SWARM.md`. Six files, no directories. That is all, deliberately.
+**What you were given** — this log, an empty `candidates.jsonl`, and the three documents
+beside them: `prompt.md`, `KDA.md`, `SWARM.md`. Five files, no directories. That is all,
+deliberately.
 
 **What you must write** — everything else, in playbook rule 10's order:
 

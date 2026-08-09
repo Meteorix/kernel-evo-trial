@@ -225,7 +225,12 @@ evidence is that deriving it early is what corrects a task's hypotheses before a
 time; shipping it pre-computed would hand every later trial that correction, and
 nobody would learn whether the loop produces it.
 
-### 4.1 `HYPOTHESES.md` — the backlog that makes the loop non-random
+### 4.1 The hypothesis backlog — what makes the loop non-random
+
+*Superseded in form, not in substance: hypotheses are now entries in the append-only
+`STATUS.md` log, opened with a `hypothesis` verdict and settled with `closed`, and the open
+set is derived by `status.sh --open` instead of kept by hand. The argument below for why a
+backlog is necessary at all still stands.*
 
 Without this, an autonomous loop reinvents ideas it already killed. Per task, two
 lists:

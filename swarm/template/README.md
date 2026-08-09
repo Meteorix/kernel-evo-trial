@@ -9,11 +9,10 @@ deliberately does not.
   KDA.md    ->       how to optimise a kernel        (symlink to the trial root)
   SWARM.md  ->       how to work with three others   (symlink to the trial root)
   STATUS.md          append-only log, seeded with a bootstrap entry
-  HYPOTHESES.md      the open backlog, seeded empty
   candidates.jsonl   the ledger, seeded empty
 ```
 
-Six files, no directories: three inputs, three outputs. Everything else a task needs — `CONTRACT.md`, the work model,
+Five files, no directories: three inputs, two outputs. Everything else a task needs — `CONTRACT.md`, the work model,
 a ground truth, a broken kernel, `smoke.py`, a profiling driver, every probe — the task
 writes itself. `candidates/`, `runs/` and `profile/` are created by whoever first writes
 into them; git does not track empty directories, so seeding them achieves nothing.
@@ -25,8 +24,12 @@ entry. It is not, and the split is worth keeping: **the ledger is what a machine
 across tasks** — per-shape milliseconds, register counts, reps, ambient load, in fixed
 fields the leader can compare four tasks on — while **`STATUS.md` is what a person reads
 within one**, in prose, including the reasoning a number cannot carry. Neither substitutes.
-`HYPOTHESES.md` is different again: the log is chronological and append-only, so it cannot
-answer *what is still open*. That is the backlog's job, and it is mutable.
+Hypotheses are entries in the log, not a separate file. The obvious objection — that an
+append-only log cannot answer *what is still open* — is answered by deriving it:
+`status.sh --open` lists ids opened with a `hypothesis` entry and never followed by a
+`closed` one. That is strictly better than the hand-kept `## Open` section it replaces,
+which was an assertion nothing forced to stay true, and it keeps re-rankings visible
+instead of overwriting them.
 
 ## What was dropped, and why
 
@@ -48,7 +51,7 @@ Measured across trial t2's four tasks, which all started from a much larger seed
 | seeded | what happened |
 | --- | --- |
 | `collect.py` | **kept unchanged by 4/4** — so it moved to `harness/`, where shared things live |
-| `HYPOTHESES.md` | grew 36 → 223–314 lines in 4/4 |
+| `HYPOTHESES.md` | grew 36 → 223–314 lines in 4/4 — kept, but folded into the log |
 | `smoke.py` | **rewritten by 4/4** |
 | `docs/draft.md`, `docs/report.md` | **untouched in 8/8** |
 | `prof_driver.py` | rewritten by 3/4 — and the fourth is the problem |

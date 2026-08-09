@@ -42,8 +42,9 @@ work being described rather than at the note describing it.
 
 ## Where the other files stand
 
-`CONTRACT.md` — the transcribed task plus the hand-counted work model (rule 2).
-`HYPOTHESES.md` — the open backlog, which is *mutable*: hypotheses open and close.
+`prompt.md` — the task. `KDA.md`, `SWARM.md` — how to attack it, how to collaborate.
+`CONTRACT.md` — the transcribed task plus the hand-counted work model (rule 2), which
+you write.
 `candidates.jsonl` — the machine-readable ledger, one row per candidate.
 This file — the human-readable history, in order, that explains why the ledger looks
 the way it does.

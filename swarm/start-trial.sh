@@ -115,15 +115,17 @@ for nn in "${picks[@]}"; do
   # silently profiled the wrong shape for a whole cycle (playbook rule 28).
   # A stub that is always rewritten except when it poisons a task is worse than
   # no stub. runs/ and profile/ are created by the harness that writes them.
-  # A task starts with SIX files and no directories. Everything dropped was
+  # A task starts with FIVE files and no directories. Everything dropped was
   # measured on trial 2: config.json was read by no code and left at its stub by
   # 4/4; collect.py was kept byte-identical by 4/4, so it belongs in the harness
   # rather than copied per task; smoke.py and prof_driver.py were rewritten by
   # 4/4 and 3/4, and the one task that kept prof_driver.py profiled the wrong
   # shape for a whole cycle. tools/, candidates/, runs/ and profile/ are created
   # by whoever first writes into them -- git does not track empty directories.
+  # HYPOTHESES.md is gone too: hypotheses are entries in the log, and the open set
+  # is DERIVED by `status.sh --open` rather than asserted in a hand-kept list that
+  # nothing forces to stay true.
   mkdir -p "$t"
-  cp "$here/template/HYPOTHESES.md" "$t/HYPOTHESES.md"
 
   # The three documents a worker needs, all reachable without leaving its own
   # directory: what the task is, how to optimise a kernel, how to work in the
@@ -149,8 +151,9 @@ for nn in "${picks[@]}"; do
 
 Seeded by \`start-trial.sh\`. Nothing here is measured yet.
 
-**What you were given** — \`tools/collect.py\` (parses bench output; generic, four tasks
-kept it unchanged) and an empty \`HYPOTHESES.md\`. That is all, deliberately.
+**What you were given** — this log, an empty \`candidates.jsonl\`, and the three documents
+beside them: \`prompt.md\`, \`KDA.md\`, \`SWARM.md\`. Five files, no directories. That is all,
+deliberately.
 
 **What you must write** — everything else, in playbook rule 10's order:
 

@@ -27,9 +27,32 @@ set -euo pipefail
 
 usage() {
   echo "usage: status.sh <NN> <id> <verdict> [--score S] [--replicated] < body" >&2
+  echo "       status.sh --open <NN>" >&2
   echo "  verdict: promoted | rejected | baseline | note | selftest | blocked" >&2
+  echo "           hypothesis | closed   (open a question / settle it)" >&2
   exit 2
 }
+
+here=$(cd "$(dirname "$0")" && pwd)
+trial=$(cd "$here/../.." && pwd)
+
+taskdir() {
+  d=$(echo "$trial"/"$1"-*)
+  [ -d "$d" ] || { echo "status.sh: no task dir for $1 under $trial" >&2; exit 2; }
+  echo "$d"
+}
+
+# THE OPEN SET IS DERIVED, NOT MAINTAINED. A hand-kept "## Open" list is an
+# assertion that drifts: nothing forces it to match what actually happened. Here
+# an id opened with `hypothesis` and never followed by `closed` IS open, by
+# construction, and the log stays append-only.
+if [ "${1:-}" = "--open" ]; then
+  f="$(taskdir "${2:?usage: status.sh --open <NN>}")/STATUS.md"
+  awk -F'[ `]+' '/^### / { if ($4 == "hypothesis") o[$2] = 1; else if ($4 == "closed") delete o[$2] }
+       END { n = 0; for (k in o) { print "  " k; n++ }
+             if (n == 0) print "  (none open)" }' "$f" | sort
+  exit 0
+fi
 
 [ $# -ge 3 ] || usage
 nn=$1; id=$2; verdict=$3; shift 3
@@ -44,13 +67,11 @@ while [ $# -gt 0 ]; do
 done
 
 case "$verdict" in
-  promoted|rejected|baseline|note|selftest|blocked) ;;
+  promoted|rejected|baseline|note|selftest|blocked|hypothesis|closed) ;;
   *) echo "status.sh: unknown verdict '$verdict'" >&2; usage ;;
 esac
 
-here=$(cd "$(dirname "$0")" && pwd)
-dir=$(echo "$here"/"$nn"-*)
-[ -d "$dir" ] || { echo "status.sh: no task dir for $nn under $here" >&2; exit 2; }
+dir=$(taskdir "$nn")
 f="$dir/STATUS.md"
 [ -f "$f" ] || { echo "status.sh: $f does not exist" >&2; exit 2; }
 

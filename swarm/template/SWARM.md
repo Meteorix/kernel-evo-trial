@@ -71,6 +71,27 @@ trusted it lost a cycle of profiles.
 - **Rank on milliseconds against your own hand-counted floor**, not `peak_fraction`. Every
   known defect in this bench lives in a denominator.
 
+## Hypotheses live in the log
+
+There is no `HYPOTHESES.md`. Open a question as an entry with the `hypothesis` verdict and
+an id of your choosing (`H1`, `H-lcg`), settle it with a `closed` entry using the same id:
+
+```bash
+../swarm/harness/status.sh <NN> H1 hypothesis <<'EOF'
+**Hypothesis** — env tiling is the whole game; a block must own >= 15 envs.
+**Result** — not yet measured.
+**Notes** — sized from the L2 model; falsified if env_tile 16 -> 32 pays.
+EOF
+
+../swarm/harness/status.sh --open <NN>     # what is still open, derived
+```
+
+**The open set is derived, never maintained.** A hand-kept "## Open" section is an
+assertion, and nothing forces it to match what actually happened; an id opened and not
+later closed *is* open, by construction. Re-sizing a hypothesis is a new entry, not an
+edit — so the record shows that you re-ranked it and why, which an overwritten list
+destroys.
+
 ## The log is the deliverable
 
 `STATUS.md` is **append-only**. Add entries with `../swarm/harness/status.sh`; never edit
@@ -86,7 +107,7 @@ cycle that ran out of time and *said so* is worth more than one that quietly sto
 
 ## Reporting, merging, and being interrupted
 
-End your cycle by updating `STATUS.md`, `HYPOTHESES.md` and `candidates.jsonl`, committing
+End your cycle by updating `STATUS.md` and `candidates.jsonl`, committing
 to your branch, and reporting: what you tested, what you promoted or rejected and on what
 evidence, and what the next cycle should do first. **State plainly what you could not
 finish.**

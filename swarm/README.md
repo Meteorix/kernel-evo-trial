@@ -6,7 +6,7 @@ produces**. A trial never writes here. `../evo-trials/<name>/` is where a run li
 ```
 cuda-bench/
   harness/     gpu.sh run.sh ab.sh repeat.sh profile.sh wstat.sh timeline.py status.sh
-  template/    collect.py prof_driver.py smoke.py, STATUS.md HYPOTHESES.md, docs/   — task scaffolding
+  template/    STATUS.md SWARM.md README.md   — what a task is seeded with
   tasks/       <NN>-<name>/CONTRACT.md   — the contract, transcribed from the bench
   start-trial.sh
 ```

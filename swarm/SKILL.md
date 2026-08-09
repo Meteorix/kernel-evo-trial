@@ -95,7 +95,7 @@ Abort the round and say why if:
 
 Read all of it before deciding anything:
 
-- `<NN>-*/STATUS.md`, `<NN>-*/CONTRACT.md`, `<NN>-*/HYPOTHESES.md`,
+- `<NN>-*/STATUS.md`, `<NN>-*/CONTRACT.md`,
   each task owns its own. These are
   authoritative.
 - `STATUS.md` — a roll-up only. If it disagrees with a task's
@@ -208,11 +208,11 @@ Worktree: /home/meteorix/proj-wt/cb<NN>   (work here, not in /home/meteorix/proj
 Branch:   task/<NN>-<slug>
 Task dir: <worktree>/../trials/<trial>/<NN>-<name>/
 
-READ FIRST: ./CONTRACT.md (yours, self-contained), ./HYPOTHESES.md, ./STATUS.md,
+READ FIRST: ./prompt.md, ./KDA.md, ./SWARM.md, ./CONTRACT.md, ./STATUS.md,
   the tail of ./candidates.jsonl, ./KDA.md and ./SWARM.md.
   Your task directory is self-contained — you should not need another task's files.
 
-Your hypotheses this round, highest value first: <from HYPOTHESES.md>
+Your hypotheses this round, highest value first: <from `status.sh --open`>
 Closed — do NOT re-spend candidates on these: <closed list>
 
 THE GPU IS SHARED AND SERIAL. One RTX 2070, up to four workers.
@@ -251,7 +251,7 @@ MEASURE HONESTLY.
 
 BOUNDARIES.
 - YOUR TASK DIRECTORY IS SELF-CONTAINED and has a fixed shape: six state files
-  (CONTRACT.md, STATUS.md, HYPOTHESES.md, candidates.jsonl,
+  (CONTRACT.md, STATUS.md, candidates.jsonl,
   and the three input docs) plus tools/, candidates/, runs/, profile/.
   All of it is YOURS — edit freely. You should never need another task's directory.
 - PUT EVERY SCRIPT YOU WRITE IN tools/. Probes and one-off models accumulate fast;
@@ -271,7 +271,7 @@ BOUNDARIES.
 
 WRITE IT DOWN OR IT DID NOT HAPPEN. You are ephemeral; the files are not.
 Before exiting: append to candidates.jsonl (promoted AND rejected, each with a
-`note` saying WHY), update HYPOTHESES.md (open and closed), commit.
+`note` saying WHY), append `hypothesis`/`closed` entries to STATUS.md, commit.
 
 If you hit an ambiguity that affects CORRECTNESS, stop and report it — do not
 assume. If it affects only performance, pick the defensible reading, record the
@@ -289,7 +289,7 @@ Per worker branch, before merging a promotion:
 - `candidates.jsonl` entry has `check: PASS`, `framework` ≠ `pytorch_only`,
   `reps >= 3`, `ms_min` present, `ambient` recorded, and a `note` explaining why
 - the candidate names the hypothesis it tested, and that hypothesis is opened or
-  closed in `HYPOTHESES.md` either way
+  opened or closed in the `STATUS.md` log either way (`status.sh --open`)
 - `git diff --stat master..task/<NN>-*` touches nothing outside the task dir
 - `git -C kernelbench.com status --porcelain` clean
 - **`STATUS.md` was appended to, not rewritten.** It is an append-only log (§4a), so
