@@ -54,15 +54,30 @@ the way it does.
 
 ### bootstrap · `note`
 
-Seeded by `start-trial.sh`. No contract, no candidates.
+Seeded by `start-trial.sh`. Nothing here is measured yet.
 
-**Hypothesis** — none yet. Playbook rule 10 fixes the order before any candidate:
-harness → reference validated against a slow, obviously correct ground truth →
-broken-kernel self-test asserted FAIL → first candidate.
+**What you were given** — `tools/collect.py` (parses bench output; generic, four tasks
+kept it unchanged) and an empty `HYPOTHESES.md`. That is all, deliberately.
+
+**What you must write** — everything else, in playbook rule 10's order:
+
+1. `CONTRACT.md` — transcribe from `kernelbench.com/benchmarks/cuda/problems-rtx2070/03_*/`
+   (`PROMPT.txt`, `problem.yaml`, `shapes.py`, `check.py`, `benchmark.py`),
+   inventing nothing (rule 1).
+2. The **hand-counted work model** into `CONTRACT.md`, before any candidate (rule 2) —
+   executed FLOPs and bytes per shape, arithmetic intensity, which roof binds, the floor
+   in ms. Do not take the numerator from `problem.yaml`; on this deck its formulas were
+   wrong in every way available.
+3. A **ground truth** the reference is validated against — slow, obvious, independent.
+4. A **broken kernel** that `check.py` is shown to FAIL (rule 4), and a `smoke.py`
+   covering the shapes `check.py` does not.
+5. Only then, the first candidate.
+
+**No `prof_driver.py` is provided, and that is on purpose.** The shared one used to
+select a shape with problem 03's knob; three tasks rewrote it and the fourth silently
+profiled the wrong shape for a whole cycle. Write your own, validate the selector against
+the real graded list, and `sys.exit` on a miss — playbook rule 28.
+
+**Hypothesis** — none yet.
 **Result** — nothing measured.
-**Notes** — **there is no `CONTRACT.md`, and writing one is the first job.** Transcribe
-it from `kernelbench.com/benchmarks/cuda/problems-rtx2070/03_*/` — `PROMPT.txt`, `problem.yaml`,
-`shapes.py`, `check.py`, `benchmark.py` — inventing nothing (rule 1). Then rule 2: the
-hand-counted work model, **before** the first candidate — executed FLOPs and bytes per
-shape, arithmetic intensity, which roof binds, the floor in ms. Do not take the numerator
-from `problem.yaml`; on this deck its formulas were wrong in every way available.
+**Notes** — no contract, no candidates, no measurements. Start at 1.
